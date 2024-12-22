@@ -1,5 +1,4 @@
 import express from "express";
-import bodyParser from "body-parser";
 
 import blogRoutes from "./routes/blog.js";
 import authRoutes from "./routes/auth.js";

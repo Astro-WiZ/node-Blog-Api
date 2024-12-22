@@ -21,3 +21,14 @@ export const authenticate = async (req, res, next) => {
     res.status(401).json({ message: "Invalid token" }, error);
   }
 };
+
+// For admin only
+
+export const authorize = (role) => {
+  return (req, res, next) => {
+    if (req.user.role !== role) {
+      return res.status(403).json({ message: "Access Denied! admins only" });
+    }
+    next();
+  };
+};
