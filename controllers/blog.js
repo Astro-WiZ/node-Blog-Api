@@ -2,8 +2,25 @@ import Blog from "../models/blog.js";
 
 export const getBlogs = async (req, res) => {
   try {
-    const allBlogs = await Blog.find({});
-    return res.json(allBlogs);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
+    const blogs = await Blog.find({}).skip(skip).limit(limit)
+    const total = await Blog.countDocuments();
+
+    return res.json({
+      totalitems: total,
+      totalpages:Math.ceil(total / limit),
+      currentpage: page,
+      pagesize: limit,
+      data: blogs,
+
+    })
+
+
+    // const allBlogs = await Blog.find({});
+    // return res.json(blogs);
   } catch (err) {
     return res.json({ error: "Error Users not Found!", err });
   }
@@ -40,3 +57,16 @@ export const filterBlogs = async (req, res) => {
     res.status(404).json({ status: "Not found!" });
   }
 };
+
+export const seedData = async(req,res)=>{
+  try{
+    // await Blog.deleteMany({})
+    for(let i = 1; i<100; i++){
+      await Blog.create({title: `Blog ${i}`, body: `this is blog no ${i}.`})
+
+    }
+    console.log("Blogs added")
+  }catch(error){
+    console.log("err:", error)
+  }
+}

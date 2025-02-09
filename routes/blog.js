@@ -4,6 +4,7 @@ import {
   createBlogs,
   deleteBlogs,
   filterBlogs,
+  seedData,
 } from "../controllers/blog.js";
 import { authorize } from "../middlewares/auth.js";
 const router = express.Router();
